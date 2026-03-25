@@ -19,7 +19,7 @@
     },
     "torrents": {
         "list": {
-            "selector": "div.central-container > table > tbody > tr.js-search-results-row"
+            "selector": "div.central-container > div.episode-table > table > tbody > tr.js-search-results-row"
         },
         "fields": {
             "id": {
