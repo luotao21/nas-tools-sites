@@ -27,21 +27,21 @@
                 "attribute": "data-itemindex"
             },
             "title": {
-                "selector": "td:nth-child(1) > a.magnet-link-wrap"
+                "selector": "td:nth-child(2) > a.magnet-link-wrap"
             },
             "details": {
-                "selector": "td:nth-child(1) > a.magnet-link-wrap",
+                "selector": "td:nth-child(2) > a.magnet-link-wrap",
                 "attribute": "href"
             },
             "download": {
-                "selector": "td:nth-child(1) > a.js-magnet.magnet-link",
+                "selector": "td:nth-child(2) > a.js-magnet.magnet-link",
                 "attribute": "data-clipboard-text"
             },
             "date_added": {
-                "selector": "td:nth-child(3)"
+                "selector": "td:nth-child(4)"
             },
             "size": {
-                "selector": "td:nth-child(2)"
+                "selector": "td:nth-child(3)"
             },
             "downloadvolumefactor": {
                 "case": {
