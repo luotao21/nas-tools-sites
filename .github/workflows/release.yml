@@ -2,6 +2,8 @@ name: Release Sites Data
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'  # 当推送v开头的tag时触发
   create:  # 兼容fork仓库中tag push事件未触发workflow的情况
@@ -18,6 +20,7 @@ jobs:
   build-and-release:
     if: >
       github.event_name == 'workflow_dispatch' ||
+      github.ref == 'refs/heads/master' ||
       startsWith(github.ref, 'refs/tags/v') ||
       (github.event_name == 'create' && github.event.ref_type == 'tag' && startsWith(github.event.ref, 'v'))
     runs-on: ubuntu-latest
@@ -38,13 +41,29 @@ jobs:
       
     - name: Generate sites.dat
       run: uv run app/generate_dat.py
+
+    - name: Resolve release tag
+      run: |
+        if [[ "$GITHUB_REF_TYPE" == "tag" && "$GITHUB_REF_NAME" == v* ]]; then
+          echo "RELEASE_TAG=$GITHUB_REF_NAME" >> "$GITHUB_ENV"
+        else
+          echo "RELEASE_TAG=sites-latest" >> "$GITHUB_ENV"
+        fi
+
+    - name: Update latest release tag
+      if: env.RELEASE_TAG == 'sites-latest'
+      run: |
+        git tag -f "$RELEASE_TAG" "$GITHUB_SHA"
+        git push origin "refs/tags/$RELEASE_TAG" --force
       
     - name: Create Release and Upload Asset
       uses: softprops/action-gh-release@v2
       with:
         files: |
           build/bin/sites.dat
-        tag_name: ${{ github.ref_name }}
+        tag_name: ${{ env.RELEASE_TAG }}
+        name: ${{ env.RELEASE_TAG }}
+        overwrite_files: true
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
