@@ -1,0 +1,13 @@
+name: Push Probe
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe push trigger
+        run: echo "push trigger works"
