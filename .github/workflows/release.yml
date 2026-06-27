@@ -6,6 +6,9 @@ on:
       - 'v*'  # 当推送v开头的tag时触发
   workflow_dispatch:  # 允许手动触发
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
